@@ -1,39 +1,38 @@
 import java.util.Scanner;
 
 public class Main {
-    public static String black = "◯";
-    public static String white = "●";
-    public static String empty = " ";
-    public static String board[][] = new String[9][9];
-
-    private static int verticalInput;
-    private static int besideInput;
-    private static String tmpVerticalInput;
-    private static String tmpBesideInput;
-
-    static boolean  gameFlag;
-
-    public static void main(String[] args){
-        ShowBoard SB = new ShowBoard();
-        StartConfig startConfig = new StartConfig();
-        Reverse RC = new Reverse();
-        CheckInputValue CII = new CheckInputValue();
-        Scanner SC = new Scanner(System.in);
-
-        System.out.println("オセロ開始");
-        startConfig.boardInit();
-        startConfig.boardSetup();
-        boolean gameFlag = true;
-
-        SB.showBoard(board);
-
-        System.out.println("横の番号から数字で入力してください");
-        tmpVerticalInput = SC.next();
-        System.out.println("縦の番号から数字で入力してください");
-        tmpBesideInput = SC.next();
-
-        RC.putReverse(verticalInput,besideInput);
-        SB.showBoard(board);
+    public static void main(String[] args) {
+        Game game = new Game();
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("オセロゲーム開始！");
+        System.out.println("座標は行、列の順で入力してください（0-7）");
+        
+        while (!game.isGameOver()) {
+            game.displayBoard();
+            System.out.println("現在のプレイヤー: " + game.getCurrentPlayer());
+            System.out.print("行を入力: ");
+            
+            try {
+                int row = scanner.nextInt();
+                System.out.print("列を入力: ");
+                int col = scanner.nextInt();
+                
+                if (game.makeMove(row, col)) {
+                    System.out.println("手を打ちました！");
+                } else {
+                    System.out.println("無効な手です。もう一度入力してください。");
+                }
+            } catch (Exception e) {
+                System.out.println("数字を入力してください。");
+                scanner.nextLine(); // バッファをクリア
+            }
+        }
+        
+        game.displayBoard();
+        System.out.println("ゲーム終了！");
+        System.out.println("勝者: " + game.getWinner());
+        
+        scanner.close();
     }
-
 }
