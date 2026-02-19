@@ -1,0 +1,3 @@
+rootProject.name = 'oserogame'
+include 'backend'
+include 'frontend'
